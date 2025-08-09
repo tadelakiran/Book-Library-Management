@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  backend:
+    name: Server — test & lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+      - name: Install server deps
+        run: |
+          cd server
+          npm ci
+      - name: Run server lint
+        run: |
+          cd server
+          npm run lint
+      - name: Run server tests
+        run: |
+          cd server
+          npm test
+
+  frontend:
+    name: Client — test & build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+      - name: Install client deps
+        run: |
+          cd client
+          npm ci
+      - name: Run client lint
+        run: |
+          cd client
+          npm run lint
+      - name: Run client tests
+        run: |
+          cd client
+          npm test
+      - name: Build client
+        run: |
+          cd client
+          npm run build
