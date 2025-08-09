@@ -40,7 +40,6 @@ jobs:
           cache: 'npm'
       - name: Install client deps
         run: |
-          cd client
           npm ci
       - name: Run client lint
         run: |
